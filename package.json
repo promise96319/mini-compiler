@@ -1,11 +1,12 @@
 {
 	"scripts": {
-		"test": "vitest"
+		"test": "vitest -u"
 	},
 	"devDependencies": {
 		"@antfu/eslint-config": "^0.26.3",
 		"eslint": "^8.23.0",
 		"typescript": "^4.8.3",
+		"vite": "^4.0.4",
 		"vitest": "^0.23.1"
 	}
 }

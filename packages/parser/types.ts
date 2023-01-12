@@ -20,12 +20,9 @@ export enum TokenType {
   Else,
 
   Const,
+  Let,
 
   Identifier, // 标识符
 
-}
-
-export interface Token {
-  type: TokenType
-  text: string
+  IntLiteral, // 数字
 }
