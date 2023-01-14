@@ -1,12 +1,9 @@
-import { Token, Tokenizer } from './tokenizer'
+import { Token, TokenType, Tokenizer } from './tokenizer'
 import { DfaState } from './state'
 import { isBlank, isChar, isDigit } from './util'
-import { TokenType } from './types'
 
 export class Lexer {
   tokenizer = new Tokenizer()
-
-  tokens: Token[] = []
   token: Token = new Token()
   tokenText = ''
 
@@ -14,7 +11,7 @@ export class Lexer {
     // 符合条件，记录下来
     if (this.tokenText.length > 0) {
       this.token.text = this.tokenText
-      this.tokens.push(this.token)
+      this.tokenizer.push(this.token)
 
       this.tokenText = ''
       this.token = new Token()
@@ -39,6 +36,11 @@ export class Lexer {
     else if (ch === '=') {
       newState = DfaState.Assignment
       this.token.type = TokenType.Assignment
+      this.tokenText += ch
+    }
+    else if (ch === ';') {
+      newState = DfaState.SemiColon
+      this.token.type = TokenType.SemiColon
       this.tokenText += ch
     }
     else if (ch === '+') {
@@ -69,7 +71,7 @@ export class Lexer {
     return newState
   }
 
-  tokenize = (code: string): Token[] => {
+  tokenize = (code: string): Tokenizer => {
     let index = 0
     let state = DfaState.Initial
     let ch
@@ -126,6 +128,7 @@ export class Lexer {
           break
 
         case DfaState.Assignment:
+        case DfaState.SemiColon:
         case DfaState.Plus:
         case DfaState.Minus:
         case DfaState.Star:
@@ -149,6 +152,6 @@ export class Lexer {
     if (this.tokenText.length > 0)
       this.initToken(ch)
 
-    return this.tokens
+    return this.tokenizer
   }
 }
